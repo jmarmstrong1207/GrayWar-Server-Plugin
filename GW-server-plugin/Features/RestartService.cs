@@ -29,12 +29,20 @@ public static class RestartService
         private set;
     }
 
+    /// <summary>
+    /// Schedule a restart after mission ends
+    /// </summary>
+    /// <param name="reason"></param>
     public static void ScheduleRestart(string? reason = null)
     {
         AwaitingRestart = true;
         _ = RestartReminderService.StartRestartReminder(reason);
     }
 
+    /// <summary>
+    /// Cancel the scheduled restart
+    /// </summary>
+    /// <param name="reason"></param>
     public static void CancelScheduledRestart(string? reason = null)
     {
         AwaitingRestart = false;
