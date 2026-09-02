@@ -18,6 +18,8 @@ public static class RestartService
     private static ConfigEntry<uint> _noPlayersRestartTimeout = null!;
     private static ConfigEntry<uint> _forceRestartMaxInterval = null!;
     
+    private static DateTime? _serverStartTime; // Used to restart server over 24 hours
+    
     /// <summary>
     /// Used to check if server is awaiting a restart after mission ends
     /// </summary>
@@ -147,12 +149,21 @@ public static class RestartService
     /// </summary>
     public static void AutoRestart()
     {
-        if (!_enableForceRestart.Value) return;
-        if (DateTime.Now.Subtract(GwServerPlugin.ServerStartTime).Hours < _forceRestartMaxInterval.Value) return;
+        if (!_enableForceRestart.Value || _serverStartTime == null) return;
+        if (DateTime.Now.Subtract((DateTime)_serverStartTime).Hours < _forceRestartMaxInterval.Value) return;
         GwServerPlugin.Logger.LogInfo("AUTO-RESTARTING SERVER");
         ChatService.SendChatMessageAsServer(
             "This server has been running for 24 hours. To keep everything running smoothly, it will restart after this mission ends");
         AwaitingRestart = true;
+    }
+
+    /// <summary>
+    ///     Resets the initial datetime reference variable "ServerStartTime".
+    /// </summary>
+    public static void ResetAutoRestart()
+    {
+        _serverStartTime = DateTime.Now;
+        GwServerPlugin.Logger.LogInfo($"AutoRestart timer reset, starting at {_serverStartTime}");
     }
 }
 
