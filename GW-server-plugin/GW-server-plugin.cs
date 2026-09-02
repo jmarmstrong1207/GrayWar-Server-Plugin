@@ -50,8 +50,6 @@ public class GwServerPlugin : BaseUnityPlugin
     private static Harmony? Harmony { get; set; }
     private static bool IsPatched { get; set; }
     
-    internal static DateTime ServerStartTime; // Used to restart server over 24 hours
-
     internal static GrpcClientManager GrpcMgr = null!;
 
     /// <summary>
@@ -82,7 +80,6 @@ public class GwServerPlugin : BaseUnityPlugin
 
     private void Awake()
     {
-        ServerStartTime = DateTime.Now;
         Instance = this;
         Logger = base.Logger;
         
@@ -280,6 +277,12 @@ public class GwServerPlugin : BaseUnityPlugin
         }
 
         _ = UpdateConnectedPlayerNameAsync(player, DateTime.UtcNow);
+        
+        // Start Autorestart timer only when first player joins
+        if (PlayerUtils.GetPlayerCount() == 1)
+        {
+            RestartService.ResetAutoRestart();
+        }
         
     }
 
