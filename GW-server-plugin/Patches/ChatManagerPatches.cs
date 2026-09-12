@@ -66,11 +66,14 @@ internal static class ChatManagerPatches
             ? $"{player.GetDisplayName()} sent message: {message}"
             : $"{player.GetDisplayName()} sent message in {factionName} chat: {message}");
         
+        var sanitizedMessage = Regex.Replace(message, "@", "");
+        sanitizedMessage = Regex.Replace(sanitizedMessage, @"</?[a-z][a-z0-9][^<>]>|<!--.*?-->", "");
+        
         var log = new ChatLog
         {
             MessageChannel = allChat ? "all" : factionName,
             MessageSendTime = DateTime.UtcNow.ToTimestamp(),
-            Message = message,
+            Message = sanitizedMessage,
             SenderSteamID = player.SteamID
         };
         GwServerPlugin.GrpcMgr.ChatLogStream?.WriteAsync(log);
