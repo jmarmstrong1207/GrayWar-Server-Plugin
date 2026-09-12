@@ -13,7 +13,7 @@ namespace GW_server_plugin.Features.CommandUtils.Commands;
 public class SetWeatherCommand(ConfigFile config) : ConfigurableCommand(config), IGameCommand, IConsoleCommand
 {
     /// <inheritdoc />
-    public override string Name => "setweather";
+    public override string OutputName => "setweather";
     
     /// <inheritdoc />
     public override string Description => "vote the weather";
@@ -22,7 +22,7 @@ public class SetWeatherCommand(ConfigFile config) : ConfigurableCommand(config),
     public override string Usage => $"setweather <clear/rainy/stormy>";
     
     /// <inheritdoc />
-    public override PermissionLevel DefaultPermissionLevel => PermissionLevel.Moderator;
+    protected override PermissionLevel DefaultPermissionLevel => PermissionLevel.Moderator;
 
     /// <inheritdoc />
     public UniTask<bool> Validate(Player player, string[] args) => Validate(args);
