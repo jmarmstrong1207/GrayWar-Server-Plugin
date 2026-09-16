@@ -180,6 +180,7 @@ public static class MissionService
             { 
                 GwServerPlugin.Logger.LogError("Failed to load next mission.");
                 VoteManager.RemoveInhibit(VoteInhibitionReason);
+                dsm.missionRotation.RemoveBrokenMap(missionOptions.Key);
                 return (false, null);
             }
 
@@ -206,14 +207,5 @@ public static class MissionService
         var missionOpt = GetNextMissionOptions();
         if (missionOpt == null) return (false, null);
         return await StartMission(missionOpt.Value);
-    }
-    
-    /// <summary>
-    ///     Select the next mission on the server.
-    /// </summary>
-    /// <param name="option"> The mission to start. </param>
-    public static async Task SetNextMission(MissionOptions option)
-    {
-        await Globals.DedicatedServerManagerInstance.SetNextMissionAsync(option);
     }
 }
