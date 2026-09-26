@@ -239,6 +239,9 @@ public static class PlayerUtils
             Time = DateTime.UtcNow.ToTimestamp()
         };
         GwServerPlugin.GrpcMgr.Client?.SendKickAsync(log);
+        
+        Globals.NetworkManagerNuclearOptionInstance.Authenticator.KickList.Remove(player.CSteamID);
+        Globals.NetworkManagerNuclearOptionInstance.Authenticator.MissionKickList.Remove(player.CSteamID);
     }
     
     /// <summary>
