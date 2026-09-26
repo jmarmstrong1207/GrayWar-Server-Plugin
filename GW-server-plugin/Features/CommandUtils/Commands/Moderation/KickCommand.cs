@@ -50,7 +50,7 @@ public class KickCommand(ConfigFile config): ConfigurableCommand(config), IConso
         var target = args[0];
         if (PlayerUtils.TryFindPlayer(target, out var targetPlayer))
         {
-            PlayerUtils.KickPlayer(targetPlayer!,  string.Join(" ", args.Skip(1)));
+            PlayerUtils.KickPlayer(targetPlayer!,  string.Join(" ", args.Skip(1)), true);
             return UniTask.FromResult<(bool, string?)>((true, $"{targetPlayer!.GetDisplayName()} has been kicked!"));
         }
 

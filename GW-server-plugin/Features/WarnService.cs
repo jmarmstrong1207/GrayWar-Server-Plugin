@@ -52,7 +52,7 @@ public class WarnService(ConfigFile config)
         if (!PlayerUtils.TryFindPlayerBySteamId(steamID, out var player)) return false;
         ChatService.SendPrivateChatMessage($"You have been warned for {reason}", player!);
 
-        PlayerUtils.KickPlayer(player!, "Too many warnings!");
+        PlayerUtils.KickPlayer(player!, "Too many warnings!", false);
         return true;
     }
 

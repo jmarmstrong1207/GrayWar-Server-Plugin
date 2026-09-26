@@ -229,7 +229,7 @@ public static class PlayerUtils
     /// </summary>
     /// <param name="player"></param>
     /// <param name="reason"></param>
-    public static void KickPlayer(Player player, string reason)
+    public static void KickPlayer(Player player, string reason, bool immediateUnKick)
     {
         Globals.NetworkManagerNuclearOptionInstance.KickPlayerAsync(player, reason).Forget();
         var log = new KickLog
@@ -239,9 +239,12 @@ public static class PlayerUtils
             Time = DateTime.UtcNow.ToTimestamp()
         };
         GwServerPlugin.GrpcMgr.Client?.SendKickAsync(log);
-        
-        Globals.NetworkManagerNuclearOptionInstance.Authenticator.KickList.Remove(player.CSteamID);
-        Globals.NetworkManagerNuclearOptionInstance.Authenticator.MissionKickList.Remove(player.CSteamID);
+
+        if (immediateUnKick)
+        {
+            Globals.NetworkManagerNuclearOptionInstance.Authenticator.KickList.Remove(player.CSteamID);
+            Globals.NetworkManagerNuclearOptionInstance.Authenticator.MissionKickList.Remove(player.CSteamID);
+        }
     }
     
     /// <summary>
